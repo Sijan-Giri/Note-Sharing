@@ -27,4 +27,34 @@ const createNote = async(req:Request,res:Response) => {
     }
 }
 
-export {createNote}
+const listNote = async(req:Request,res:Response) => {
+    try {
+        const allNotes = await Note.find()
+    res.status(200).json({
+        message : "Notes fetched successfully",
+        data : allNotes
+    })
+    } catch (error) {
+      console.log("Error occured",error)  
+    }
+}
+
+const listNoteById = async(req:Request,res:Response) => {
+    try {
+        const {id} = req.params;
+        if(!id) {
+            res.status(400).json({
+                message : "Please provide id"
+            })
+        }
+        const note = await Note.findById(id);
+        res.status(200).json({
+            message : "Note fetched successfully",
+            data : note
+        })
+    } catch (error) {
+        console.log("Error occured",error)
+    }
+}
+
+export {createNote , listNote , listNoteById}
