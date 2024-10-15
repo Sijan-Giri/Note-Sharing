@@ -57,4 +57,17 @@ const listNoteById = async(req:Request,res:Response) => {
     }
 }
 
-export {createNote , listNote , listNoteById}
+const deleteNote = async(req:Request,res:Response) => {
+    const {id} = req.params;
+    if(!id) {
+        res.status(400).json({
+            message : "Please provide id"
+        })
+    }
+    await Note.findByIdAndDelete(id)
+    res.status(200).json({
+        message : "Note deleted successfully"
+    })
+}
+
+export {createNote , listNote , listNoteById , deleteNote}
