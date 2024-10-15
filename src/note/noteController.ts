@@ -70,4 +70,31 @@ const deleteNote = async(req:Request,res:Response) => {
     })
 }
 
-export {createNote , listNote , listNoteById , deleteNote}
+const updateNote = async(req:Request,res:Response) => {
+    const {id} = req.params;
+    const file = req.file ? `${envConfig.backendUrl}/${req.file.filename}` : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ7EtqOpuewOP5rSURN8E4W8rUPhuGoPK2LKw&s"
+    const {title , subtitle , description} = req.body;
+    if(!id) {
+        res.status(400).json({
+            message : "Please provide id"
+        })
+    }
+    if(!title || !description) {
+        res.status(400).json({
+            message : "Please provide title & description"
+        })
+    }
+    const updatedNote = await Note.findByIdAndUpdate(id,{
+        title,
+        subtitle,
+        description,
+        file
+    });
+    res.status(200).json({
+        message : "Note updated successfully",
+        data : updatedNote
+    })
+    
+}
+
+export {createNote , listNote , listNoteById , deleteNote , updateNote}
