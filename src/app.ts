@@ -1,7 +1,12 @@
 import express  from "express";
+import cors from "cors"
+import noteRoute from "./note/noteRoute";
+
 const app = express();
 
-import noteRoute from "./note/noteRoute";
+app.use(cors({
+    origin : "*"
+}))
 app.use(express.json())
 
 app.use("",noteRoute)

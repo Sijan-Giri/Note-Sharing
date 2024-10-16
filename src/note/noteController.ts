@@ -48,6 +48,11 @@ const listNoteById = async(req:Request,res:Response) => {
             })
         }
         const note = await Note.findById(id);
+        if(!note) {
+            res.status(400).json({
+                message : "Note not available with this id"
+            })
+        }
         res.status(200).json({
             message : "Note fetched successfully",
             data : note
@@ -64,7 +69,12 @@ const deleteNote = async(req:Request,res:Response) => {
             message : "Please provide id"
         })
     }
-    await Note.findByIdAndDelete(id)
+    const note = await Note.findByIdAndDelete(id);
+    if(!note) {
+        res.status(400).json({
+            message : "Note not available with this id"
+        })
+    }
     res.status(200).json({
         message : "Note deleted successfully"
     })
@@ -83,6 +93,10 @@ const updateNote = async(req:Request,res:Response) => {
         res.status(400).json({
             message : "Please provide title & description"
         })
+    }
+    const note = await Note.findById(id);
+    if(!note) {
+        res.status(400)
     }
     const updatedNote = await Note.findByIdAndUpdate(id,{
         title,
